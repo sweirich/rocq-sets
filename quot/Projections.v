@@ -12,10 +12,10 @@
     are not structural subterms of [f].  We therefore use well-founded
     recursion over the relation [projBelow] ("is a component of a couple
     member of") — well-founded by [Foundation.Below_wf], now that couples are
-    primitive — and, since this development is already classical (it uses
-    [prop_ext] and Hilbert's [epsilon] via [repr]), we decide the [Couple]
-    test with [excluded_middle_informative].  Working directly on [ZFSet]
-    (whose equality is Leibniz [=]) keeps these ordinary Rocq functions.
+    primitive.  Whether a value is a couple is decided by [isCoupleb], which
+    reads the constructor of a representative through [quot_rec]; it needs
+    no choice or excluded middle.  Working directly on [ZFSet] (whose
+    equality is Leibniz [=]) keeps these ordinary Rocq functions.
 
     [FST] and [SND] differ only in the base case, so both are instances of a
     single recursor [projRec] parameterised by the base operation.  The
@@ -23,10 +23,10 @@
     member has no components and is dropped. *)
 
 From Stdlib Require Import FunctionalExtensionality.
-From Stdlib Require Import ClassicalEpsilon.
-From Stdlib Require Import Relation_Operators.
+From Stdlib Require Import Relation_Operators Morphisms.
 From Stdlib Require Import Wellfounded.Inclusion.
 
+Require Import utils.all.
 Require Import Sets.
 Require Import Axioms.
 Require Import Cartesian.
@@ -97,6 +97,34 @@ Proof.
     exists (mk a), (mk b). rewrite Couple_mk. reflexivity.
 Qed.
 
+(* A boolean test for couples: the constructor of any representative.  [EQ]
+   preserves the constructor, so this lifts through [quot_rec] without choice. *)
+Definition is_pairb (e : Ens) : bool :=
+  match e with pair _ _ => true | _ => false end.
+
+#[global] Instance is_pairb_Proper : Proper (EQ ==> eq)%signature is_pairb.
+Proof.
+  intros x y H. destruct x, y; simpl in H; try contradiction; reflexivity.
+Qed.
+
+Definition isCoupleb : ZFSet -> bool := quot_rec is_pairb.
+
+Lemma isCoupleb_mk : forall e : Ens, isCoupleb (mk e) = is_pairb e.
+Proof. intro e. unfold isCoupleb, mk. apply quot_rec_eq. Qed.
+
+Lemma isCoupleb_true : forall f : ZFSet, isCoupleb f = true <-> isCouple f.
+Proof.
+  intro f. rewrite isCouple_IsPair. pattern f; apply ZFSet_ind1. intro e.
+  rewrite isCoupleb_mk, IsPair_mk. destruct e; simpl; split; intro H;
+    solve [ reflexivity | exact I | discriminate H | contradiction ].
+Qed.
+
+Lemma isCoupleb_false : forall f : ZFSet, isCoupleb f = false <-> ~ isCouple f.
+Proof.
+  intro f. rewrite <- isCoupleb_true. destruct (isCoupleb f); split; intro H;
+    solve [ discriminate H | reflexivity | exfalso; apply H; reflexivity | intro; discriminate ].
+Qed.
+
 (* No couple is a *member* of another couple — couples are memberless. *)
 Lemma Couple_not_in_Couple : forall a v c d, ⟨ a , v ⟩ ∈ ⟨ c , d ⟩ -> False.
 Proof. intros a v c d H. exact (not_In_Couple _ _ _ H). Qed.
@@ -143,7 +171,7 @@ Qed.
 Definition proj_step (base : ZFSet -> ZFSet) (f : ZFSet)
     (rec : forall y : ZFSet, projBelow y f -> ZFSet) : ZFSet.
 Proof.
-  destruct (excluded_middle_informative (isCouple f)) as [Hc | Hnc].
+  destruct (isCoupleb f).
   - exact (base f).
   - refine (mk (sup (pi1 (repr (couples f)))
               (fun a => repr (⟨ rec (pfst (mk (pi2 (repr (couples f)) a))) _
@@ -170,7 +198,7 @@ Lemma proj_step_ext :
     proj_step base x g = proj_step base x h.
 Proof.
   intros base x g h Hgh. unfold proj_step.
-  destruct (excluded_middle_informative (isCouple x)) as [Hc | Hnc].
+  destruct (isCoupleb x).
   - reflexivity.
   - do 2 f_equal. apply functional_extensionality. intro a.
     rewrite !Hgh. reflexivity.
@@ -210,9 +238,9 @@ Lemma projRec_Couple :
     projRec base (⟨ x , y ⟩) = base (⟨ x , y ⟩).
 Proof.
   intros base x y. rewrite projRec_unfold. unfold proj_step.
-  destruct (excluded_middle_informative (isCouple (⟨ x , y ⟩))) as [Hc | Hnc].
-  - reflexivity.
-  - exfalso. apply Hnc. exists x, y. reflexivity.
+  assert (Hc : isCoupleb (⟨ x , y ⟩) = true)
+    by (apply isCoupleb_true; exists x, y; reflexivity).
+  rewrite Hc. reflexivity.
 Qed.
 
 (* Recursive case: off couples, [projRec] maps over the couple members. *)
@@ -223,9 +251,8 @@ Lemma projRec_rel :
       = (e ← couples f ;; {| ⟨ projRec base (pfst e) , projRec base (psnd e) ⟩ |}).
 Proof.
   intros base f Hf. rewrite projRec_unfold. unfold proj_step.
-  destruct (excluded_middle_informative (isCouple f)) as [Hc | Hnc].
-  - contradiction.
-  - apply (image_repr_eq_iUnion
+  apply isCoupleb_false in Hf. rewrite Hf.
+  apply (image_repr_eq_iUnion
              (fun e => ⟨ projRec base (pfst e) , projRec base (psnd e) ⟩)).
 Qed.
 

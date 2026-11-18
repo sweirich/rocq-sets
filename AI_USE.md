@@ -23,15 +23,13 @@ author. Claude wrote most of the Rocq code and comments.
 
 - **`utils/`** is adapted from the `theories/utils` directory of the
   [`domains`](https://github.com/sweirich/domains) development, trimmed to
-  what this library needs. It was written by that project's authors, not as
+  what this library needs. It was written by Meven Lennon-Bertrand, not as
   part of this work.
 
 ## Checking
 
 Every proof is checked by Rocq. The library postulates quotient types and uses
 propositional extensionality, function extensionality and Hilbert's epsilon
-(see `README.md`). Apart from these axioms, one lemma is admitted:
-`wf_Vbelow` in `quot/V2.v`. As its comment explains, no proof depends on it.
-Since Rocq checks the proofs, they do not depend on trusting the AI. What does
-depend on review is that the definitions and the statements of the theorems
-say what is intended.
+(see `README.md`). No lemma is admitted. Since Rocq checks the proofs, they do
+not depend on trusting the AI. What does depend on review is that the
+definitions and the statements of the theorems say what is intended.

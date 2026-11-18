@@ -14,8 +14,8 @@
       - [zf/quot/ZFDefs.v], [ZFNotation.v] — derived-structure definitions
         and notation;
 
-      - [zf/quot/{Diagonal,Projections,Tags,PiFacts}.v] — further derived
-        constructions (diagonals, projections, nat-indexed tagging, Π-facts).
+      - [zf/quot/{Diagonal,Projections,PiFacts}.v] — further derived
+        constructions (diagonals, projections, Π-facts).
 
     This file is the *single* module that code outside [zf] should import:
     [Require Import ZFSets] re-exports the whole public surface, so
@@ -23,8 +23,7 @@
 
     (The internal [zf/quot] files must NOT import this umbrella — that would
     cycle, since [ZFSets] re-exports them; they import [ZFSetFacts] and the
-    lower layers directly.  [V2.v] is a standalone experiment and is not part
-    of the re-exported surface.)
+    lower layers directly.)
 
     One layer is deliberately left out: [zf/quot/Universes.v], the universe
     tower [U0 ∈ U1] and its closure theory.  It sits *above* this umbrella
@@ -43,5 +42,4 @@ Require Export ZFSetFacts.
 Require Export Foundation.
 Require Export Diagonal.
 Require Export Projections.
-Require Export Tags.
 Require Export PiFacts.

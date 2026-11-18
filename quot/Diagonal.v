@@ -5,7 +5,6 @@
    language), factored out of [Timbda.TimSTLC]; the semantics-specific
    results connecting diagonality to a type interpretation live there. *)
 
-From Stdlib Require Import ssreflect.
 Require Import ZFSetFacts.
 Require Import ZFNotation.
 
@@ -34,13 +33,13 @@ Proof.
   unfold iUnion_pat. apply iUnion_ext_mem. intros q qIn.
   pose proof (Inc_IN _ _ _ Hsub qIn) as Hq.
   apply IN_Prod_EX in Hq. destruct Hq as [qa [qc [Hqa [Hqc Heq]]]].
-  subst q. rewrite pfst_Couple psnd_Couple.
+  subst q. rewrite pfst_Couple, psnd_Couple.
   (* qa is diagonal: pfst qa = psnd qa *)
   pose proof (diag_eq qa (HA qa Hqa)) as Efa.
   (* qc lives in some B a', which is diagonal *)
   apply iUnion_IN in Hqc. destruct Hqc as [a' [Ha' Hqc]].
   pose proof (diag_eq qc (HB a' Ha' qc Hqc)) as Efc.
-  rewrite Efa Efc. reflexivity.
+  rewrite Efa, Efc. reflexivity.
 Qed.
 
 (** On a diagonal relation, the [psnd] projection is injective (the pair
@@ -50,7 +49,7 @@ Lemma diag_psnd_inj (A : ZFSet) :
   forall ab ab', ab ∈ A -> ab' ∈ A -> psnd ab = psnd ab' -> ab = ab'.
 Proof.
   intros HA ab ab' Hab Hab' He.
-  rewrite (HA ab Hab) (HA ab' Hab') He. reflexivity.
+  rewrite (HA ab Hab), (HA ab' Hab'), He. reflexivity.
 Qed.
 
 (** ... and so is [pfst], since on a diagonal pair both projections
@@ -61,7 +60,7 @@ Lemma diag_pfst_inj (A : ZFSet) :
 Proof.
   intros HA ab ab' Hab Hab' He.
   apply (diag_psnd_inj A HA); auto.
-  rewrite -(diag_eq ab (HA ab Hab)) -(diag_eq ab' (HA ab' Hab')).
+  rewrite <- (diag_eq ab (HA ab Hab)), <- (diag_eq ab' (HA ab' Hab')).
   exact He.
 Qed.
 

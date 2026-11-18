@@ -23,8 +23,6 @@ quot/Foundation.v
 ZFSets.v
 quot/Diagonal.v
 quot/Projections.v
-quot/Tags.v
-quot/V2.v
 quot/PiFacts.v
 
 # The universe tower [U0 ∈ U1] and its closure theory.  Deliberately NOT

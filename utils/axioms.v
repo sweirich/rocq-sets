@@ -1,6 +1,6 @@
 (** * Axioms: the axioms of the development *)
 
-Require Import basics tactics ssreflect ssrfun.
+Require Import basics tactics.
 
 (** Instead of working with explicit setoids, we use them implicitly by working
   with (a mock-up) observational equality, which gives us an internal language
@@ -117,7 +117,7 @@ Lemma quot_rec_eq {T : Type} {R : relation T} `{! Equivalence R} {P : Type}
   `{! Proper (R ==> eq) f}
   (t : T) : quot_rec f (to_quot t) = f t.
 Proof.
-  by rewrite /quot_rec quot_rect_eq.
+  unfold quot_rec. now rewrite quot_rect_eq.
 Qed.
 
 Program Definition quot_rect_irr {T : Type} {R : relation T} `{! Equivalence R}
@@ -141,10 +141,10 @@ Instance to_quot_proper
   {B : Type} {RB : relation B} `{! Equivalence RB}
   (f : A -> B)
   `{e : Proper _ (RA ==> RB) f} :
-  Proper (RA ==> eq) (to_quot \o f).
+  Proper (RA ==> eq) (fun x => to_quot (f x)).
 Proof.
   intros x y h.
-  by apply quot_ext, e.
+  now apply quot_ext, e.
 Qed.
 
 Definition quot_map
@@ -153,7 +153,7 @@ Definition quot_map
   (f : A -> B)
   `{e : Proper _ (RA ==> RB) f}
   : quot RA -> quot RB :=
-  quot_rec (to_quot \o f).
+  quot_rec (fun x => to_quot (f x)).
 
 Lemma quot_map_eq
   {A : Type} {RA : relation A} `{! Equivalence RA}
@@ -163,13 +163,13 @@ Lemma quot_map_eq
   (a : A)
   : quot_map f (to_quot a) = to_quot (f a).
 Proof.
-  by rewrite /quot_map quot_rec_eq.
+  unfold quot_map. now rewrite quot_rec_eq.
 Qed.
 
 Instance PER_Equivalence {A} {RA : relation A} `{! PER RA} :
-  @Equivalence {a : A | Proper RA a} (RA @@ sval).
+  @Equivalence {a : A | Proper RA a} (RA @@ (@proj1_sig A (Proper RA))).
 Proof.
-  rewrite /RelCompFun /Proper.
+  unfold RelCompFun, Proper.
   split ; red.
   - apply proj2_sig.
   - intros.
@@ -191,13 +191,13 @@ Program Definition quot_map2
     (p := _) a.
 Next Obligation.
   intros.
-  rewrite /Proper /respectful.
+  unfold Proper, respectful.
   intros.
   now apply quot_ext, e.
 Qed.
 Next Obligation.
   intros.
-  rewrite /Proper /respectful.
+  unfold Proper, respectful.
   intros.
   pattern b ; apply quot_ind ; intros b'.
   rewrite !quot_rec_eq.

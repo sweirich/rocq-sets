@@ -46,8 +46,6 @@ Within `quot/`:
   recursion.
 - `Diagonal.v`, `PiFacts.v`: lemmas about diagonal relations and function
   graphs.
-- `Tags.v`, `V2.v`: values tagged with a natural number, and a recursive
-  universe of tagged values built on them.
 - `Universes.v`: the Grothendieck universes `U0 ∈ U1` and the lemmas that each
   is closed under the set-formers.
 
@@ -67,8 +65,11 @@ Besides the Rocq kernel, the library uses:
 - propositional extensionality and function extensionality,
 - quotient types, postulated in `utils/axioms.v` (an axiomatization due to
   Meven Lennon-Bertrand),
-- Hilbert's epsilon (`ClassicalEpsilon`), which makes the development
-  classical.
+- Hilbert's epsilon (`Stdlib.Logic.Epsilon`), used to pick a representative
+  of a `ZFSet` (`repr`) and in a few definitions such as `applyFun`.
+  Together with the extensionality axioms it implies excluded middle, so
+  the development is classical, though no proof uses excluded middle
+  directly.
 
 The `zfc/` core itself uses no axioms.
 
@@ -90,7 +91,7 @@ MIT (see `LICENSE`), with two exceptions:
 
 - `zfc/` (the submodule) is LGPL-2.1 or later, like the original ZFC
   contribution.
-- `utils/` is adapted from the
-  [`domains`](https://github.com/sweirich/domains) development and is under
-  its BSD-3-Clause license, Copyright (c) 2014 Robert Dockins (see
+- `utils/` is adapted from code by Meven Lennon-Bertrand in the
+  [`domains`](https://github.com/sweirich/domains) development and is
+  distributed under that project's BSD-3-Clause license (see
   `utils/LICENSE`).

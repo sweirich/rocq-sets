@@ -1,8 +1,6 @@
 (* PiFacts.v: general ZFSet / Pi lemmas gathered from the timbda
-   development (Timbda2, TimSTLC, Parametricity).  Uses the ssreflect
-   tactic language, matching those modules. *)
+   development (Timbda2, TimSTLC, Parametricity). *)
 
-From Stdlib Require Import ssreflect.
 From Stdlib Require Import FunctionalExtensionality.
 Require Import ZFNotation Diagonal ZFSetFacts Projections.
 
@@ -66,7 +64,7 @@ Proof.
   pose proof (Inc_IN _ _ _ Hsub Hq2) as Hp2.
   apply IN_Prod_EX in Hp1. destruct Hp1 as [qa1 [qc1 [Hqa1 [_ Eq1]]]].
   apply IN_Prod_EX in Hp2. destruct Hp2 as [qa2 [qc2 [Hqa2 [_ Eq2]]]].
-  subst q1 q2. rewrite !pfst_Couple !psnd_Couple in He1 He2.
+  subst q1 q2. rewrite !pfst_Couple, !psnd_Couple in He1, He2.
   pose proof (Couple_inj_left _ _ _ _ He1) as Ea1.
   pose proof (Couple_inj_right _ _ _ _ He1) as Eb1.
   pose proof (Couple_inj_left _ _ _ _ He2) as Ea2.
@@ -75,7 +73,7 @@ Proof.
   { apply (Hkf qa1 qa2 Hqa1 Hqa2). rewrite <- Ea1, <- Ea2. reflexivity. }
   subst qa2.
   assert (Eqc : qc1 = qc2) by exact (Hfn qa1 qc1 qc2 Hq1 Hq2).
-  subst qc2. rewrite Eb1 Eb2. reflexivity.
+  subst qc2. rewrite Eb1, Eb2. reflexivity.
 Qed.
 
 (** The relational application packed into the [Eapp] arm: iterating a
@@ -100,7 +98,7 @@ Proof.
     pose proof (HF a1 (psnd q) b0 Hq' Hedge) as Eb. rewrite Eb. apply IN_Sing.
   - apply Sing_Inc_IN.
     apply IN_iUnion with (y := ⟨ a1 , b0 ⟩); [ exact Hedge | ].
-    rewrite pfst_Couple psnd_Couple.
+    rewrite pfst_Couple, psnd_Couple.
     apply In_P_Comp; [ apply IN_Sing | reflexivity ].
 Qed.
 
@@ -119,7 +117,7 @@ Proof.
   - apply IN_iUnion with (y := (a ← Sing x ;; {| ⟨ a , z ⟩ |})).
     + apply (iUnion_graph_mem_pi (Sing x) B (fun _ => z)).
       intros a Ha. apply IN_Sing_EQ in Ha. subst a. exact Hz.
-    + rewrite (iUnion_Sing_l x (fun a => {| ⟨ a , z ⟩ |}) (IsSet_Sing _)) rng_Sing_Couple. apply IN_Sing.
+    + rewrite (iUnion_Sing_l x (fun a => {| ⟨ a , z ⟩ |}) (IsSet_Sing _)), rng_Sing_Couple. apply IN_Sing.
 Qed.
 
 (* [η] for [Pi]: a function equals the graph of its own application. *)
@@ -150,7 +148,7 @@ Proof.
     apply IN_Sing_EQ in Hz. subst z.
     pose proof (Inc_IN _ _ _ Hsub Hel) as Hel'.
     apply IN_Prod_EX in Hel'. destruct Hel' as [p [b [Hp [_ Eel]]]]. subst el.
-    rewrite pfst_Couple psnd_Couple.
+    rewrite pfst_Couple, psnd_Couple.
     apply iUnion_IN in Hp. destruct Hp as [a [Ha Hp]]. apply IN_Sing_EQ in Hp. subst p.
     rewrite psnd_Couple.
     pose proof (pi_edge_value _ _ _ _ _ Hh Hel) as Eb. rewrite Eb.
@@ -161,7 +159,7 @@ Proof.
     pose proof (pi_value_edge _ _ _ _ Hh Hxa) as Hedge.
     unfold iUnion_pat. apply IN_iUnion with (y := ⟨ ⟨ x , a ⟩ , applyFun h ⟨ x , a ⟩ ⟩).
     + exact Hedge.
-    + rewrite pfst_Couple psnd_Couple psnd_Couple. apply IN_Sing.
+    + rewrite pfst_Couple, psnd_Couple, psnd_Couple. apply IN_Sing.
 Qed.
 
 Lemma reproject_Pi : forall x E (G : ZFSet -> ZFSet),

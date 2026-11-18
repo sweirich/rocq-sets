@@ -1,8 +1,7 @@
 (** * domains.basics: basic definitions *)
-From Stdlib Require Import ssreflect Morphisms Relations RelationClasses.
+From Stdlib Require Import Morphisms Relations RelationClasses.
 Require Import tactics.
 
-Open Scope general_if_scope.
 
 (** ** Equalities *)
 
