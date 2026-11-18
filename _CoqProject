@@ -1,0 +1,32 @@
+-R . zf
+
+zfc/Sets.v
+zfc/Axioms.v
+zfc/Cartesian.v
+zfc/Omega.v
+zfc/Hierarchy.v
+
+utils/tactics.v
+utils/basics.v
+utils/axioms.v
+utils/all.v
+
+ens/EnsDefs.v
+ens/EnsNotation.v
+ens/EnsLib.v
+ens/EnsNat.v
+quot/ZFSetCore.v
+quot/ZFDefs.v
+quot/ZFNotation.v
+quot/ZFSetFacts.v
+quot/Foundation.v
+ZFSets.v
+quot/Diagonal.v
+quot/Projections.v
+quot/Tags.v
+quot/V2.v
+quot/PiFacts.v
+
+# The universe tower [U0 ∈ U1] and its closure theory.  Deliberately NOT
+# re-exported by ZFSets.v: require it explicitly to get [U0] / [U1].
+quot/Universes.v
