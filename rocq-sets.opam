@@ -1,0 +1,27 @@
+opam-version: "2.0"
+name: "rocq-sets"
+version: "dev"
+synopsis: "ZF-style set theory in Rocq, as a quotient of Aczel's sets"
+description: """
+A Rocq library of ZF-style set theory, built as a quotient of Aczel's
+type-theoretic encoding of sets (with atoms and primitive pairs). It provides
+a type ZFSet whose equality is Leibniz equality, the usual set-formers and
+their laws, functions as sets of pairs, and Grothendieck universes U0 ∈ U1.
+Installed under the logical name `zf`.
+"""
+maintainer: "Stephanie Weirich"
+authors: ["Stephanie Weirich" "Benjamin Werner (zfc)" "Meven Lennon-Bertrand (utils)"]
+license: ["MIT" "LGPL-2.1-or-later" "BSD-3-Clause"]
+homepage: "https://github.com/sweirich/rocq-sets"
+bug-reports: "https://github.com/sweirich/rocq-sets/issues"
+dev-repo: "git+https://github.com/sweirich/rocq-sets.git"
+depends: [
+  "rocq-core" {>= "9.0" & < "9.1~"}
+  "rocq-stdlib" {>= "9.0"}
+]
+build: [make "-j%{jobs}%"]
+install: [make "install"]
+tags: [
+  "logpath:zf"
+  "category:Mathematics/Logic/Set theory"
+]

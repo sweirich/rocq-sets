@@ -85,6 +85,25 @@ make
 
 For an existing clone, run `git submodule update --init` first.
 
+## Installing with opam
+
+The library is packaged as `rocq-sets` (`rocq-sets.opam`). It is not in an
+opam repository; install it by pinning the git repository:
+
+```sh
+opam pin add rocq-sets git+https://github.com/sweirich/rocq-sets.git
+```
+
+or, from a local clone (with the `zfc` submodule checked out),
+
+```sh
+opam pin add rocq-sets .
+```
+
+This installs the library under the logical name `zf` in Rocq's
+`user-contrib`, so a project can `Require Import zf.ZFSets` without a
+`-R`/`-Q` flag for it. `make install` does the same without opam.
+
 ## License
 
 MIT (see `LICENSE`), with two exceptions:
