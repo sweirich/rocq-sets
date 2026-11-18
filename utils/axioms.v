@@ -1,6 +1,9 @@
 (** * Axioms: the axioms of the development *)
 
-Require Import basics tactics.
+Require Export basics.
+
+(* Prefer the type-theoretic notations ([A * B] is the product type). *)
+#[global] Open Scope type_scope.
 
 (** Instead of working with explicit setoids, we use them implicitly by working
   with (a mock-up) observational equality, which gives us an internal language
@@ -108,8 +111,7 @@ Program Definition quot_rec {T : Type} {R : relation T} `{! Equivalence R} {P : 
   quot R -> P :=
   quot_rect (fun _ => P) f _.
 Next Obligation.
-  intros.
-  now rewrite transport_const.
+  intros. rewrite transport_const. apply p. assumption.
 Qed.
 
 Lemma quot_rec_eq {T : Type} {R : relation T} `{! Equivalence R} {P : Type}
@@ -174,8 +176,8 @@ Proof.
   - apply proj2_sig.
   - intros.
     now symmetry.
-  - intros.
-    now etransitivity.
+  - intros x y z H1 H2.
+    etransitivity; eassumption.
 Qed.
 
 Existing Instance respectful_per.

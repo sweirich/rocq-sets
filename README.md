@@ -26,7 +26,7 @@ the fork's `ATOMS_AND_PAIRS.md` for details.
 | Directory | Contents |
 |---|---|
 | `zfc/` | (submodule) `Ens`, extensional equality `EQ`, membership `IN`, and the basic set-formers: empty set, pairing, union, separation, power set, products, `Omega`; the small-sets hierarchy in `Hierarchy.v`. |
-| `utils/` | Tactics and the axioms the library uses (see below). |
+| `utils/` | The axioms the library uses (see below); `utils/axioms.v` is the entry point. |
 | `ens/` | Further operations on `Ens`: binary union and intersection, indexed union, the dependent function space `Pi`, domain and range, pair projections, natural numbers; their setoid instances and laws. |
 | `quot/` | The quotient `ZFSet := Ens / EQ` and the theory built on it. |
 

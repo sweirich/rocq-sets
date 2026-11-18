@@ -19,7 +19,7 @@ Require Import ZFDefs.
 Require Import ZFNotation.
 From Stdlib Require Import Logic.Epsilon.
 From Stdlib Require Import PeanoNat.
-Require Import utils.all.
+Require Import utils.axioms.
 
 (* State and reason in the ZFSet-level notations ([zf_scope]); the
    Ens-level [ens_scope] (opened transitively by the core) is closed so

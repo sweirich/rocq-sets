@@ -24,7 +24,7 @@ Import zf.zfc.Cartesian.
 Import zf.zfc.Omega.
 Import zf.zfc.Hierarchy.
 
-Require Import utils.all.
+Require Import utils.axioms.
 Require Import EnsNotation.
 Require EnsLib.
 Require EnsNat.

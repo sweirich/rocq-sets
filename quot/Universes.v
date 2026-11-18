@@ -45,7 +45,7 @@ Import zf.zfc.Hierarchy.
 (* [EnsDefs] is imported (not just required) for the universe name [ulib],
    which it declares; [ZFSets] is imported after it, so the ZFSet-level
    names and notations shadow the [Ens]-level ones. *)
-Require Import utils.all.
+Require Import utils.axioms.
 Require Import EnsDefs.
 Require EnsLib.
 Require EnsNat.

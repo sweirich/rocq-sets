@@ -6,10 +6,8 @@ zfc/Cartesian.v
 zfc/Omega.v
 zfc/Hierarchy.v
 
-utils/tactics.v
 utils/basics.v
 utils/axioms.v
-utils/all.v
 
 ens/EnsDefs.v
 ens/EnsNotation.v

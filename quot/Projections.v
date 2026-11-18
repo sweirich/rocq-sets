@@ -26,7 +26,7 @@ From Stdlib Require Import FunctionalExtensionality.
 From Stdlib Require Import Relation_Operators Morphisms.
 From Stdlib Require Import Wellfounded.Inclusion.
 
-Require Import utils.all.
+Require Import utils.axioms.
 Require Import Sets.
 Require Import Axioms.
 Require Import Cartesian.
